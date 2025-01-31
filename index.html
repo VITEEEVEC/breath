@@ -1,0 +1,106 @@
+
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: lightblue;
+            margin: auto;
+            transition: transform 2s ease-in-out, background-color 1s;
+        }
+        .breath-text {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        .settings {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Breathing Exercise</h2>
+        <button onclick="toggleSettings()">Settings</button>
+        <div class="settings" id="settings">
+            <label>Inhale (seconds): <input type="number" id="inhale" value="4"></label><br>
+            <label>Hold (seconds): <input type="number" id="hold" value="4"></label><br>
+            <label>Exhale (seconds): <input type="number" id="exhale" value="4"></label><br>
+            <label>Relax (seconds): <input type="number" id="relax" value="4"></label><br>
+            <label>Cycles: <input type="number" id="cycles" value="5"></label><br>
+            <label>Inhale Color: <input type="color" id="inhaleColor" value="#00ff00"></label><br>
+            <label>Hold Color: <input type="color" id="holdColor" value="#ffff00"></label><br>
+            <label>Exhale Color: <input type="color" id="exhaleColor" value="#ff0000"></label><br>
+            <label>Relax Color: <input type="color" id="relaxColor" value="#0000ff"></label><br><br>
+        </div>
+        <div class="circle" id="circle"></div>
+        <div class="breath-text" id="breath-text">Ready?</div>
+        <div class="controls">
+            <button onclick="startBreathing()">Start</button>
+            <button onclick="stopBreathing()">Stop/Reset</button>
+        </div>
+    </div>
+
+    <script>
+        let breathingIntervals = [];
+        let stopRequested = false;
+
+        function toggleSettings() {
+            let settings = document.getElementById("settings");
+            settings.style.display = settings.style.display === "none" ? "block" : "none";
+        }
+
+        function startBreathing() {
+            stopRequested = false;
+            clearAllIntervals();
+
+            let inhaleTime = parseInt(document.getElementById('inhale').value) * 1000;
+            let holdTime = parseInt(document.getElementById('hold').value) * 1000;
+            let exhaleTime = parseInt(document.getElementById('exhale').value) * 1000;
+            let relaxTime = parseInt(document.getElementById('relax').value) * 1000;
+            let cycles = parseInt(document.getElementById('cycles').value);
+            let count = 0;
+
+            function breatheCycle() {
+                if (count >= cycles || stopRequested) {
+                    document.getElementById("breath-text").textContent = stopRequested ? "Ready?" : "Session Complete";
+                    return;
+                }
+                count++;
+                document.getElementById("breath-text").textContent = "Inhale...";
+                document.getElementById("circle").style.backgroundColor = document.getElementById('inhaleColor').value;
+                document.getElementById("circle").style.transform = "scale(1.5)";
+                breathingIntervals.push(setTimeout(() => {
+                    document.getElementById("breath-text").textContent = "Hold...";
+                    document.getElementById("circle").style.backgroundColor = document.getElementById('holdColor').value;
+                    breathingIntervals.push(setTimeout(() => {
+                        document.getElementById("breath-text").textContent = "Exhale...";
+                        document.getElementById("circle").style.backgroundColor = document.getElementById('exhaleColor').value;
+                        document.getElementById("circle").style.transform = "scale(1)";
+                        breathingIntervals.push(setTimeout(() => {
+                            document.getElementById("breath-text").textContent = "Relax...";
+                            document.getElementById("circle").style.backgroundColor = document.getElementById('relaxColor').value;
+                            breathingIntervals.push(setTimeout(breatheCycle, relaxTime));
+                        }, exhaleTime));
+                    }, holdTime));
+                }, inhaleTime));
+            }
+            breatheCycle();
+        }
+
+        function stopBreathing() {
+            stopRequested = true;
+            clearAllIntervals();
+            document.getElementById("breath-text").textContent = "Ready?";
+            document.getElementById("circle").style.transform = "scale(1)";
+            document.getElementById("circle").style.backgroundColor = "lightblue";
+        }
+
+        function clearAllIntervals() {
+            while (breathingIntervals.length) {
+                clearTimeout(breathingIntervals.pop());
+            }
+        }
+    </script>
+</body>
+</html>
