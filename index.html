@@ -8,28 +8,37 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 50px;
-            background: url('galaxy-unsplash.jpg') no-repeat center center fixed;
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: url('/mnt/data/bryan-goff-RF4p4rTM-2s-unsplash.jpg') no-repeat center center fixed;
             background-size: cover;
             color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .container {
-            max-width: 400px;
-            margin: auto;
+            width: 90%;
+            max-width: 600px;
             background: rgba(0, 0, 0, 0.6);
             padding: 20px;
             border-radius: 10px;
+            text-align: center;
         }
         .circle {
-            width: 100px;
-            height: 100px;
+            width: 20vw;
+            height: 20vw;
+            max-width: 150px;
+            max-height: 150px;
             border-radius: 50%;
             background-color: lightblue;
             margin: auto;
             transition: transform 2s ease-in-out, background-color 1s;
         }
         .breath-text {
-            font-size: 24px;
+            font-size: 5vw;
             margin-top: 20px;
         }
         .controls {
