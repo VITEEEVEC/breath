@@ -12,7 +12,7 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            background: url('galaxy-unsplash.jpg.jpg') no-repeat center center fixed;
+            background: url('galaxy-unsplash.jpg') no-repeat center center fixed;
             background-size: cover;
             color: white;
             display: flex;
@@ -44,11 +44,11 @@
             max-height: 150px;
             border-radius: 50%;
             background-color: lightblue;
-            transition: transform 2s ease-in-out, background-color 1s;
+            transition: transform linear;
         }
         .breath-text {
             font-size: 5vw;
-            margin-top: 20px;
+            margin-top: 50px;
         }
         .controls {
             margin-top: 20px;
@@ -116,12 +116,14 @@
                 count++;
                 document.getElementById("breath-text").textContent = "Inhale...";
                 document.getElementById("circle").style.backgroundColor = document.getElementById('inhaleColor').value;
+                document.getElementById("circle").style.transitionDuration = inhaleTime + 'ms';
                 document.getElementById("circle").style.transform = "scale(1.5)";
                 breathingIntervals.push(setTimeout(() => {
                     document.getElementById("breath-text").textContent = "Hold...";
                     document.getElementById("circle").style.backgroundColor = document.getElementById('holdColor').value;
                     breathingIntervals.push(setTimeout(() => {
                         document.getElementById("breath-text").textContent = "Exhale...";
+                        document.getElementById("circle").style.transitionDuration = exhaleTime + 'ms';
                         document.getElementById("circle").style.backgroundColor = document.getElementById('exhaleColor').value;
                         document.getElementById("circle").style.transform = "scale(1)";
                         breathingIntervals.push(setTimeout(() => {
